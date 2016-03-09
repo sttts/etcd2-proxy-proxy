@@ -14,8 +14,9 @@ import (
 	"strings"
 
 	"github.com/coreos/etcd/client"
+	"github.com/coreos/go-systemd/daemon"
+	systemdutil "github.com/coreos/go-systemd/util"
 	ghandlers "github.com/gorilla/handlers"
-
 )
 
 func singleJoiningSlash(a, b string) string {
@@ -166,9 +167,9 @@ func main() {
 			}{
 				Members: []client.Member{
 					client.Member{
-						ID: "0815081508150815",
-						Name: "etcd2-proxy-proxy",
-						PeerURLs: []string{},
+						ID:         "0815081508150815",
+						Name:       "etcd2-proxy-proxy",
+						PeerURLs:   []string{},
 						ClientURLs: clientAdvertiseURLs,
 					},
 				},
@@ -189,7 +190,7 @@ func main() {
 			Transport: transport,
 		})
 
-		go func (u *url.URL) {
+		go func(u *url.URL) {
 			if u.Scheme == "http" {
 				log.Fatal(http.ListenAndServe(u.Host,
 					ghandlers.CombinedLoggingHandler(os.Stdout, m)))
@@ -206,6 +207,16 @@ func main() {
 		}(u)
 
 		log.Printf("Listening on %s\n", u.String())
+	}
+
+	if systemdutil.IsRunningSystemd() {
+		err := daemon.SdNotify("READY=1")
+		if err != nil {
+			log.Printf("failed to notify systemd for readiness: %v\n", err)
+			if err == daemon.SdNotifyNoSocket {
+				log.Printf("forgot to set Type=notify in systemd service file?\n")
+			}
+		}
 	}
 
 	c := make(chan struct{}, 0)
