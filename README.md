@@ -1,21 +1,21 @@
 # etcd2-proxy-proxy – proxying a proxy
 
-There is a proxy mode in [https://github.com/coreos/etcd](etcd) that allows to create a non-member instance on every host of a big cluster without growing the etcd cluster itself to more than 3 or 5 nodes.
+There is a proxy mode in [etcd2](https://github.com/coreos/etcd) that allows to create a non-member instance on every host of a big cluster without growing the etcd cluster itself to more than 3 or 5 nodes.
 
 The proxy mode though has some drawbacks:
-- it does not hide the client URLs of the etcd cluster members: etcdctl and other etcd client will still list the members and access them directly,
+- it does not hide the client URLs of the etcd cluster members: etcdctl and other etcd clients will still list the members and access them directly,
 - an etcd proxy cannot work behind another etcd proxy.
 
-For the first issue etcdctl has a `--no-sync` option that is not enable by default. It's ulgy to use that everywhere in scripts.
+For the first issue etcdctl has a `--no-sync` option that is not enabled by default. It's ulgy to use that everywhere in scripts though, or maybe even impossible if those are 3rdparty scripts.
 
-The second option has no solution.
+The second drawback has no obvious solution.
 
 etcd2-proxy-proxy will solve both problems
-- by implementing an http/https reverse proxy
-- by hiding the upstream client URLs
+- by implementing an http/https reverse proxy,
+- by hiding the upstream client URLs,
 - by returning itself as the advertised client URL which makes `--no-sync` unneccessary.
 
-Moreover, it can use different authentication settings locally for its client than those used to communicate with the upstream etcd proxy.
+Moreover, it can use different authentication and encryption settings locally for its clients than those used to communicate with the upstream etcd proxy.
 
 ## Usage
 
