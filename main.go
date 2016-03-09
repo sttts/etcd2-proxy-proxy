@@ -30,19 +30,49 @@ func singleJoiningSlash(a, b string) string {
 	return a + b
 }
 
+func env(k string, def string) string {
+	if v, found := os.LookupEnv(k); found {
+		return v
+	} else {
+		return def
+	}
+}
+
 func main() {
 	upstream := flag.String("upstream", "", "The upstream server.")
 	upstreamCertFile := flag.String("upstream-cert-file", "", "identify HTTPS-enabled upstream servers using this SSL certificate file.")
 	upstreamKeyFile := flag.String("upstream-key-file", "", "identify at HTTPS-enabled upstream servers using this SSL key file.")
 	upstreamCAFile := flag.String("upstream-ca-file", "", "verify certificates of HTTPS-enabled upstream servers using this CA bundle.")
-
-	listenClientURLsString := flag.String("listen-client-urls", "http://localhost:2379,http://localhost:4001", "list of URLs to listen on for client traffic.")
-	certFile := flag.String("cert-file", "", "path to the client server TLS cert file.")
-	keyFile := flag.String("key-file", "", "path to the client server TLS key file.")
-	clientCertAuth := flag.Bool("client-cert-auth", false, "enable client cert authentication.")
-	trustedCAFile := flag.String("trusted-ca-file", "", "verify certificates of HTTPS-enabled clients using this CA bundle")
-
-	clientAdvertiseURLsString := flag.String("client-advertise-urls", "http://localhost:2379", "The client URL to advertise to the etcd clients.")
+	listenClientURLsString := flag.String(
+		"listen-client-urls",
+		env("ETCD_LISTEN_CLIENT_URLS", "http://localhost:2379,http://localhost:4001"),
+		"list of URLs to listen on for client traffic.",
+	)
+	certFile := flag.String(
+		"cert-file",
+		env("ETCD_CERT_FILE", ""),
+		"path to the client server TLS cert file.",
+	)
+	keyFile := flag.String(
+		"key-file",
+		env("ETCD_KEY_FILE", ""),
+		"path to the client server TLS key file.",
+	)
+	clientCertAuth := flag.String(
+		"client-cert-auth",
+		env("ETCD_CLIENT_CERT_AUTH", "false"),
+		"enable client cert authentication.",
+	)
+	trustedCAFile := flag.String(
+		"trusted-ca-file",
+		env("ETCD_TRUSTED_CA_FILE", ""),
+		"verify certificates of HTTPS-enabled clients using this CA bundle",
+	)
+	clientAdvertiseURLsString := flag.String(
+		"client-advertise-urls",
+		env("ETCD_CLIENT_ADVERTISE_URLS", "http://localhost:2379"),
+		"The client URL to advertise to the etcd clients.",
+	)
 	k := flag.Bool("k", false, "Do not verify upstream server certificates.")
 
 	flag.Parse()
@@ -85,7 +115,7 @@ func main() {
 	}
 
 	// possibly add client root-ca cert
-	if *clientCertAuth {
+	if *clientCertAuth == "true" {
 		if *trustedCAFile == "" {
 			log.Fatal("trusted-ca-file must be set.")
 		}

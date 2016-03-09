@@ -89,6 +89,16 @@ Usage of ./etcd2-proxy-proxy:
         identify at HTTPS-enabled upstream servers using this SSL key file.
 ```
 
+### Environment Variables
+
+The follow environment variables are supported for the corresponding flags:
+- ETCD_LISTEN_CLIENT_URLS
+- ETCD_CERT_FILE
+- ETCD_KEY_FILE
+- ETCD_CLIENT_CERT_AUTH
+- ETCD_TRUSTED_CA_FILE
+- ETCD_CLIENT_ADVERTISE_URLS
+
 ## Build
 
 ```bash
