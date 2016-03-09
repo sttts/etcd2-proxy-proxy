@@ -1,0 +1,35 @@
+{
+	"ImportPath": "github.com/sttts/etcd2-proxy-proxy",
+	"GoVersion": "go1.6",
+	"Deps": [
+		{
+			"ImportPath": "github.com/coreos/etcd/Godeps/_workspace/src/github.com/ugorji/go/codec",
+			"Comment": "v2.3.0-alpha.1-30-g99eb6f3",
+			"Rev": "99eb6f35c193a88e636dd2fb5dc8ab7727609b8e"
+		},
+		{
+			"ImportPath": "github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/net/context",
+			"Comment": "v2.3.0-alpha.1-30-g99eb6f3",
+			"Rev": "99eb6f35c193a88e636dd2fb5dc8ab7727609b8e"
+		},
+		{
+			"ImportPath": "github.com/coreos/etcd/client",
+			"Comment": "v2.3.0-alpha.1-30-g99eb6f3",
+			"Rev": "99eb6f35c193a88e636dd2fb5dc8ab7727609b8e"
+		},
+		{
+			"ImportPath": "github.com/coreos/etcd/pkg/pathutil",
+			"Comment": "v2.3.0-alpha.1-30-g99eb6f3",
+			"Rev": "99eb6f35c193a88e636dd2fb5dc8ab7727609b8e"
+		},
+		{
+			"ImportPath": "github.com/coreos/etcd/pkg/types",
+			"Comment": "v2.3.0-alpha.1-30-g99eb6f3",
+			"Rev": "99eb6f35c193a88e636dd2fb5dc8ab7727609b8e"
+		},
+		{
+			"ImportPath": "github.com/gorilla/handlers",
+			"Rev": "b3aff83722cb2ae031a70cae984650e3a16cd20e"
+		}
+	]
+}
