@@ -43,7 +43,7 @@ func main() {
 	trustedCAFile := flag.String("trusted-ca-file", "", "verify certificates of HTTPS-enabled clients using this CA bundle")
 
 	clientAdvertiseURLsString := flag.String("client-advertise-urls", "http://localhost:2379", "The client URL to advertise to the etcd clients.")
-	k := flag.Bool("k", false, "Do not verify certificates.")
+	k := flag.Bool("k", false, "Do not verify upstream server certificates.")
 
 	flag.Parse()
 
